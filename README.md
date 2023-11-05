@@ -23,3 +23,45 @@ Before using this project, you need to perform an initial configuration:
 #define TCP_SERVER_PORT 8000
 
 #endif
+```
+
+## Consuming
+
+To consume this project, I've prepared a simple `Node.js` example. Follow these steps:
+
+- Create a new directory somewhere, and open the directory in your terminal;
+
+- Start a new Node.js project and set it type to `module`:
+```sh
+npm init -y
+npm pkg set type="module"
+```
+
+- Create a file named `index.js` at the `root` of your project and paste the following content:
+```js
+import { Socket } from 'net';
+import REPL from 'repl';
+
+const host = '192.168.4.1';
+const port = 8000;
+
+const client = new Socket();
+client.connect(port, host, () => console.log('Connected to the server'));
+client.on('data', data => console.log(`Data received from the server: ${data}`));
+client.on('close', () => console.log('Connection closed'));
+
+const send = msg => client.write(`${msg}\n`);
+
+const repl = new REPL.start('> ');
+repl.context.send = send;
+```
+
+- Start the project by running
+```sh
+node index.js
+```
+
+- After starting the project, you can use the `REPL` to interact with the server. The `send` function allows you to send messages to the server by typing them in the REPL prompt.
+```sh
+send('cmd')
+```
