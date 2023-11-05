@@ -52,7 +52,7 @@ client.on('close', () => console.log('Connection closed'));
 
 const send = msg => client.write(`${msg}\n`);
 
-const repl = new REPL.start('> ');
+const repl = REPL.start('> ');
 repl.context.send = send;
 ```
 
